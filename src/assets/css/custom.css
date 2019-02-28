@@ -17,3 +17,6 @@
 .section__products .card-body {
     display: none;
 }
+.form-control {
+    width: 80%;
+}
