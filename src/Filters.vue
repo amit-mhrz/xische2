@@ -23,28 +23,20 @@
                            
                         </div>
                     </div>
-                    <button class="navbar-toggler" type="button">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+                    <Slide right>
+                      <ul class="navbar-nav">
+                          <li class="nav-item">   
+                            <a class="nav-link" href="#">About</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">Terms Of Use</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">Xische</a>
+                          </li> 
+                      </ul>
+                    </Slide>
                 </div>
-                <div id="collapsibleNavbar">
-                    <div class="nav-header">
-                        <button class="close-nav">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <ul class="navbar-nav">
-                      <li class="nav-item">   
-                        <a class="nav-link" href="#">About</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">Terms Of Use</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">Xische</a>
-                      </li> 
-                  </ul>
-                </div> 
 
               </b-navbar>
             </b-col>
@@ -59,24 +51,24 @@
                       <h2>CONTENT TYPE</h2>
                      
                       <div class="filter__contentType filter__sticky">
-                          <b-col sm="6">
-                            <b-form-select
-                                  :options="availableTopics"
-                                  required
-                                  v-model="selectedTopics">
-                            </b-form-select>
-                          </b-col>
+                          <multiselect v-model="selectedTopics" :options="availableTopics" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Select  Type" label="name" track-by="name" @change="addThing(thing)">
+                            <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">
+                                {{ values.length }} options selected</span>
+                            </template>
+                          </multiselect>
+                          <pre class="language-json"><code>{{ selectedTopics }}</code></pre>
                       </div>
+
                       <div class="filter__contentType filter__fade">
                         <ul>
                           <li v-for="(topic, i) in availableTopics" :key="i">
-                            <input type="checkbox" :id="topic.text" :value="topic.value" v-model="selectedTopics" @change="handleTasks(topic.value)">
-                            <label :for="topic.text">{{topic.text}}</label>
+                            <input type="checkbox" :id="topic.name" :value="topic.value" v-model="selectedTopics">
+                            <label :for="topic.name">{{topic.name}}</label>
                           </li>
                         </ul>
-
                       </div>
                   </div>
+
                   <div class="col-sm-3">
                       <h2>CONTENT TYPE</h2>
                      
@@ -183,18 +175,29 @@
           </div>
       </section>
 
+      <!-- Range Slider -->
+
+
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import VueMatchHeights from 'vue-match-heights'
+import Multiselect from 'vue-multiselect';
+import 'vue-nouislider/dist/vue-nouislider.css'
+import { Slide } from 'vue-burger-menu'
+import VueNouislider from 'vue-nouislider/dist/vue-nouislider.common'
 export default {
   name: "filters",
+  components: {
+    Multiselect,
+    Slide
+  },
   data() {
     return {
       searchText: "",
-      availableTopics: [
-      ],
+      availableTopics: [],
       availableLens: [
         { value: null, text: 'Please select a lense' },
       ],
@@ -205,7 +208,7 @@ export default {
       dateFilter: "decending",
       selectedLens: null,
       selectedPublication: null,
-      scrolled: false,
+      scrolled: false
     };
   },
   mounted() {
@@ -261,7 +264,7 @@ export default {
       ).then(function(response){
         console.log(response.data.records);
         response.data.records.forEach(element => {
-          self.availableTopics.push({text: element.fields.Name, value: element.fields.Name})
+          self.availableTopics.push({name: element.fields.Name, value: element.fields.Name})
         });
       }).catch(function(error){
         console.log(error)

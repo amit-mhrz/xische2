@@ -12,29 +12,20 @@
                 </router-link>
 
                 <div class="content-right">                    
-                    <button class="navbar-toggler" type="button">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+                    <Slide right>
+                      <ul class="navbar-nav">
+                          <li class="nav-item">   
+                            <a class="nav-link" href="#">About</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">Terms Of Use</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">Xische</a>
+                          </li> 
+                      </ul>
+                    </Slide>
                 </div>
-
-                <div id="collapsibleNavbar">
-                    <div class="nav-header">
-                        <button class="close-nav">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <ul class="navbar-nav">
-                      <li class="nav-item">   
-                        <a class="nav-link" href="#">About</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">Terms Of Use</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">Xische</a>
-                      </li> 
-                  </ul>
-                </div> 
 
               </b-navbar>
             </b-col>
@@ -50,7 +41,7 @@
                   </h1>
               </b-col>
           </b-row>
-          <b-row class="center">
+          <b-row class="center_image">
               <b-col sm="12">
                    <b-img :src="imageURL" fluid alt="Responsive image" />
               </b-col>
@@ -72,8 +63,12 @@
 
 <script>
 import axios from 'axios';
+import { Slide } from 'vue-burger-menu'
 export default {
   name: "Card",
+  components: {
+    Slide
+  },
   data() {
     return {
         id: null,
