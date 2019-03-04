@@ -51,7 +51,7 @@
                       <h2>CONTENT TYPE</h2>
                      
                       <div class="filter__contentType filter__sticky">
-                          <multiselect v-model="selectedTopics" :options="availableTopics" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Select  Type" label="name" track-by="name" @change="addThing(thing)">
+                          <multiselect v-model="selectedTopics" :options="availableTopics" return="id" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Select  Type" label="name" track-by="name" @input="executeLoader">
                             <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">
                                 {{ values.length }} options selected</span>
                             </template>
@@ -70,26 +70,22 @@
                   </div>
 
                   <div class="col-sm-3">
-                      <h2>CONTENT TYPE</h2>
+                      <h2>PUBLICATION</h2>
                      
                       <div class="filter__city filter__sticky">
-                         <div class="select-wrapper">
-                          <select>
-                              <option>London</option>
-                              <option>London</option>
-                              <option>Toronto</option>
-                          </select>
-                          </div>
+                          <multiselect v-model="selectedPTopics" :options="availablePublications" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Select  Type" label="text" track-by="text">
+                            <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">
+                                {{ values.length }} options selected</span>
+                            </template>
+                          </multiselect>
+                          <pre class="language-json"><code>{{ selectedPTopics }}</code></pre>
                       </div>
                       <div class="filter__city filter__fade">
                           <ul>
-                              <li><label class="check-box"><input type="checkbox"><span class="checkmark"></span>  New York</label></li>
-                              <li><label class="check-box"><input type="checkbox"><span class="checkmark"></span>  London</label></li>
-                              <li><label class="check-box"><input type="checkbox"> <span class="checkmark"></span>  Toronto</label></li>
-                              <li><label class="check-box"><input type="checkbox"><span class="checkmark"></span>  Vancouver</label></li>
-                              <li><label class="check-box"><input type="checkbox"> <span class="checkmark"></span> Tokyo</label></li>
-                              <li><label class="check-box"><input type="checkbox"><span class="checkmark"></span>  Vienna</label></li>
-                              <li><label class="check-box"><input type="checkbox"><span class="checkmark"></span>  Stockholm</label></li>
+                            <li v-for="(ptopic, i) in availablePublications" :key="i">
+                              <input type="checkbox" :id="ptopic.text" :value="ptopic.value" v-model="selectedPTopics">
+                              <label :for="ptopic.text">{{ptopic.text}}</label>
+                            </li>
                           </ul>
                       </div>
                   </div>
@@ -146,27 +142,33 @@
                                   <div class="col-sm-12">
                                       <ul>
                                           <li>
-                                              <div class="select-wrapper">
-                                              <select>
-                                                  <option>2005</option>
-                                                  <option>2006</option>
-                                                  <option>2007</option>
+                                              <div class="startdate-wrapper">
+                                              <select v-model="startDate">
+                                                  <option>2016</option>
+                                                  <option>2017</option>
+                                                  <option>2018</option>
+                                                  <option>2019</option>
+                                                  <option>2020</option>
                                               </select>
+                                              {{startDate}}
                                               </div>
                                           </li>
                                           <li>
                                               <p>to</p>
                                           </li>
                                           <li>
-                                              <div class="select-wrapper">
-                                              <select>
-                                                  <option>2005</option>
-                                                  <option>2006</option>
-                                                  <option>2007</option>
+                                              <div class="enddate-wrapper">
+                                              <select v-model="endDate">
+                                                  <option>2016</option>
+                                                  <option>2017</option>
+                                                  <option>2018</option>
+                                                  <option>2019</option>
+                                                  <option>2020</option>
                                               </select>
+                                              {{endDate}}
                                               </div>
                                           </li>
-                                      </ul>
+                                      </ul>                                       
                                   </div>
                           </div>
                       </div>
@@ -198,17 +200,19 @@ export default {
     return {
       searchText: "",
       availableTopics: [],
+      availablePTopics: [],
       availableLens: [
         { value: null, text: 'Please select a lense' },
       ],
-      availablePublications: [
-        { value: null, text: 'Please select a publication' },
-      ],
+      availablePublications: [],
       selectedTopics: [],
       dateFilter: "decending",
       selectedLens: null,
       selectedPublication: null,
-      scrolled: false
+      selectedPTopics: [],
+      scrolled: false,
+      startDate: [],
+      endDate: []
     };
   },
   mounted() {
@@ -217,10 +221,11 @@ export default {
     this.getTypes();
   },
   methods: {
+    executeLoader(selectedItems) {},
     getLenses(){
       var self = this;
-      var app_id = "app838WoUK7gksAto";
-      var app_key = "key4hPsF3lTzceL6g";
+      var app_id = "appH81X67TStprrkF";
+      var app_key = "key0Uo9OP77Cxoi5c";
       axios.get(
           "https://api.airtable.com/v0/"+app_id+"/Lenses",
           {
@@ -228,7 +233,7 @@ export default {
           }
       ).then(function(response){
         response.data.records.forEach(element => {
-          self.availableLens.push({text: element.fields.Name, value: element.fields.Name})
+          self.availableLens.push({text: element.fields.Name, value: element.id})
         });
       }).catch(function(error){
         console.log(error)
@@ -236,8 +241,8 @@ export default {
     },
     getPublications(){
       var self = this;
-      var app_id = "app838WoUK7gksAto";
-      var app_key = "key4hPsF3lTzceL6g";
+      var app_id = "appH81X67TStprrkF";
+      var app_key = "key0Uo9OP77Cxoi5c";
       axios.get(
           "https://api.airtable.com/v0/"+app_id+"/Sources",
           {
@@ -246,7 +251,7 @@ export default {
       ).then(function(response){
         console.log(response.data.records);
         response.data.records.forEach(element => {
-          self.availablePublications.push({text: element.fields.Name, value: element.id})
+          self.availablePublications.push({text: element.fields.Name, value: element.fields.Name})
         });
       }).catch(function(error){
         console.log(error)
@@ -254,8 +259,8 @@ export default {
     },
     getTypes(){
       var self = this;
-      var app_id = "app838WoUK7gksAto";
-      var app_key = "key4hPsF3lTzceL6g";
+      var app_id = "appH81X67TStprrkF";
+      var app_key = "key0Uo9OP77Cxoi5c";
       axios.get(
           "https://api.airtable.com/v0/"+app_id+"/Type",
           {
@@ -291,6 +296,9 @@ export default {
     },
     selectedTopics() {
       this.$emit("topicSelected", this.selectedTopics);
+    },
+    selectedPTopics() {
+      this.$emit("ptopicSelected", this.selectedPTopics);
     },
     dateFilter() {
       this.$emit("dateFilter", this.dateFilter);

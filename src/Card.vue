@@ -94,8 +94,8 @@ export default {
   methods: {
       getListings(){
           var self = this;
-            var app_id = "app838WoUK7gksAto";
-            var app_key = "key4hPsF3lTzceL6g";
+            var app_id = "appH81X67TStprrkF";
+            var app_key = "key0Uo9OP77Cxoi5c";
             axios.get(
                 "https://api.airtable.com/v0/"+app_id+"/Weekly%20Report?maxRecords=50&view=Main%20View",
                 {

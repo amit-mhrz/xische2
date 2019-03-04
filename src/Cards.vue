@@ -1,6 +1,6 @@
 <template>
   <div>
-       <filters @searched="searchIt" @topicSelected="topicSelected" @dateFilter="dateFilter" @lensSelected="selectLens" @publicationSelected="selectPublication"></filters>
+       <filters @searched="searchIt" @topicSelected="topicSelected" @ptopicSelected="ptopicSelected" @dateFilter="dateFilter" @lensSelected="selectLens" @publicationSelected="selectPublication"></filters>
 
       <section class="content__bottom">
                 
@@ -10,12 +10,13 @@
                   <div class="row">
                       <div class="col-sm-4">
                           <div class="showing">
-                              <p><span>12</span> Results</p>
+                              <p><span>{{ resultCount }}</span> Results</p>
                           </div>
                       </div>
                       <div class="col-sm-8">
                           <div class="appliedFilters">
                           {{selectedTopics}}
+                          {{selectedPTopics}}
                               <ul>
                                   <li><a href="#">Future <span class="icon icon-close"><img src="/src/assets/img/close.png" alt=""></span></a></li>
                                   <li><a href="#">London <span class="icon icon-close"><img src="/src/assets/img/close.png" alt=""></span></a></li>
@@ -31,16 +32,22 @@
           <!-- Products -->
           <section class="section__products">
               <div class="container">
-                  <div class="row">
+                  <div class="row"
+                    v-match-heights="{
+                      el: ['.item__box', '.same_height', '.item__desc', '.item__case', '.item__txt'],
+                      disabled: [],
+                    }">
                     <div class="col-sm-12 col-md-6 col-lg-3" v-for="(listing, i) in filteredListings" :key="i" @click="openListing(i)">
                         <div class="item__box">
-                            <b-card :img-src="getImageUrl(i)" img-alt="Image"></b-card>
+                            <b-card class="same_height" :img-src="getImageUrl(i)" img-alt="Image"></b-card>
                             <div class="item__desc">
                                 <div class="item__case">
                                     <p><span class="icon icon-case"><img src="/src/assets/dist/img/book-open.svg" alt=""></span>{{ listing.fields['Type'][0] }}</p>
                                 </div>
                                 <div class="item__txt">
                                     <h3>{{ listing.fields['Title/Topic'] }}</h3>
+                                    {{ listing.fields['Date Added'] }} <br>
+                                    {{ listing.fields['Publication-str'] }}
                                 </div>
                             </div>
                         </div>
@@ -55,8 +62,8 @@
 </template>
 
 <script>
-import axios from 'axios';
-import Filters from './Filters.vue';
+import axios from 'axios'
+import Filters from './Filters.vue'
 export default {
   name: "Cards",
   components: {Filters},
@@ -65,6 +72,7 @@ export default {
       listings: [],
       searchQuery: '',
       selectedTopics: [],
+      selectedPTopics: [],
       datefilter: 'decending',
       lensFilter: null,
       publicationFilter: null,
@@ -77,7 +85,8 @@ export default {
         max: 100,
         start: 40,
         step: 1
-        }
+        },
+      responseData: []
     };
   },
   computed: {
@@ -98,14 +107,19 @@ export default {
       if(this.selectedTopics.length > 0) {
         filtered = filtered.filter(x => x.fields.Type && x.fields.Type.some(r => this.selectedTopics.includes(r)));
       }
+      if(this.selectedPTopics.length > 0) {
+        filtered = filtered.filter(x => x.fields.Sources && x.fields.Sources.some(r => this.selectedPTopics.includes(r)));
+      }
       if(this.lensFilter !== null) {
         filtered = filtered.filter(x => x.fields['Lens-str'] === this.lensFilter);
       }
-
       if(this.publicationFilter !== null) {
         filtered = filtered.filter(x => x.fields['Publication'].includes(this.publicationFilter));
       }
       return filtered;
+    },
+    resultCount () {
+      return this.responseData && this.responseData.length;
     }
   },
   mounted() {
@@ -118,6 +132,9 @@ export default {
     topicSelected (selectedTopics){
       this.selectedTopics = selectedTopics;
     },
+    ptopicSelected (selectedPTopics){
+      this.selectedPTopics = selectedPTopics;
+    },
     dateFilter (filter) {
       this.datefilter = filter;
     },
@@ -129,16 +146,17 @@ export default {
     },
     loadListings(){
       var self = this;
-      var app_id = "app838WoUK7gksAto";
-      var app_key = "key4hPsF3lTzceL6g";
+      var app_id = "appH81X67TStprrkF";
+      var app_key = "key0Uo9OP77Cxoi5c";
       axios.get(
-          "https://api.airtable.com/v0/"+app_id+"/Weekly%20Report?maxRecords=50&view=Main%20View",
+          "https://api.airtable.com/v0/"+app_id+"/Weekly%20Report?maxRecords=999&view=Main%20View",
           {
               headers: { Authorization: "Bearer "+app_key }
           }
       ).then(function(response){
         console.log(response.data.records);
         self.listings = response.data.records;
+        this.responseData = response.data;
       }).catch(function(error){
         console.log(error)
       });
