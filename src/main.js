@@ -10,7 +10,6 @@ import "bootstrap-vue/dist/bootstrap-vue.css"
 
 Vue.use(Router)
 Vue.use(BootstrapVue)
-
 Vue.use(VueMatchHeights, {
   disabled: [768], // Optional: default viewports widths to disabled resizing on. Can be overridden per usage
 });

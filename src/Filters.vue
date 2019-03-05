@@ -69,7 +69,7 @@
                   </div>
 
                   <div class="col-sm-3">
-                      <h2>CONTENT TYPE</h2>
+                      <h2>CITY</h2>
                      
                       <div class="filter__city filter__sticky">
                          <div class="select-wrapper">
@@ -146,9 +146,8 @@
                                   <ul>
                                     <li>
                                         <div class="select-wrapper">
-                                        <select name="minYear">
-                                            <option value="null">Min</option>
-                                            <option v-for="year in years" :value="year">{{ year }}</option>
+                                        <select v-model="selectedminYear">
+                                            <option v-for="year in years" :value="year" :selected="selectedminYear === year">{{ year }}</option>
                                         </select>
                                         </div>
                                     </li>
@@ -157,9 +156,8 @@
                                     </li>
                                     <li>
                                         <div class="select-wrapper">
-                                        <select name="maxYear">
-                                            <option value="null">Max</option>
-                                            <option v-for="year in years" :value="year">{{ year }}</option>
+                                        <select v-model="selectedmaxYear">
+                                            <option v-for="year in years" :value="year" :selected="selectedmaxYear === year">{{ year }}</option>
                                         </select>
                                         </div>
                                     </li>
@@ -179,11 +177,12 @@
             <section class="section__timeline filter__fade">
                 <div class="container">                      
                     <veeno 
-                    :handles="[2016, 2019]" 
+                    :handles="[selectedminYear, selectedmaxYear]" 
                     :step = "1"
-                    :range = "{ 'min': 2010, 'max': 2020 }"
+                    :range = "{ 'min': minYear, 'max': maxYear }"
                     connect
                     :pipsy = "{mode: 'steps', density: 10}"
+                    @update = "onDateSlideUpdate"
                     ></veeno>
                 </div>
             </section>              
@@ -218,13 +217,17 @@ export default {
       ],
       availableMinDate: [],
       availableMaxDate: [],
-      minDate: null,
       selectedTopics: [],
       dateFilter: "decending",
       selectedLens: null,
       selectedPublication: null,
       scrolled: false,
-      typeOptions: []
+      typeOptions: [],
+      minYear: 2010,
+      maxYear: 2020,
+      selectedminYear: 2010,
+      selectedmaxYear: 2020
+
     };
   },
   mounted() {
@@ -288,13 +291,18 @@ export default {
       });
     },
     handleScroll (event) {
-    let fs = document.querySelector(".section__filter");
+      let fs = document.querySelector(".section__filter");
       if (window.scrollY > 10 && !fs.className.includes('sticky')) {
           fs.classList.add('sticky'); 
       } else if (window.scrollY < 10) {
           fs.classList.remove('sticky');
       }
+    },
+    onDateSlideUpdate(e){
+      this.selectedminYear = e.unencoded[0];
+      this.selectedmaxYear = e.unencoded[1];
     }
+    
   },
   created () {
     window.addEventListener('scroll', this.handleScroll);
@@ -310,7 +318,6 @@ export default {
       console.log("Type Selected --");
       this.$emit("topicSelected", this.selectedTopics); 
     },
-    
     dateFilter() {
       this.$emit("dateFilter", this.dateFilter);
     },
@@ -320,11 +327,18 @@ export default {
     selectedPublication() {
       this.$emit("publicationSelected", this.selectedPublication);
     },
+    selectedminYear(){
+      this.$emit("minYearSelected", this.selectedminYear);
+    },
+    selectedmaxYear(){
+      this.$emit("maxYearSelected", this.selectedmaxYear);
+    }
   },
   computed : {
     years () {
-      const year = new Date().getFullYear()
-      return Array.from({length: year - 2000}, (value, index) => 2001 + index)
+      let year = new Date().getFullYear()
+      year += 1; 
+      return Array.from({length: year - 2009}, (value, index) => 2010 + index)
     }
   }
 };

@@ -1,6 +1,6 @@
 <template>
   <div>
-       <filters @searched="searchIt" @topicSelected="topicSelected" @dateFilter="dateFilter" @lensSelected="selectLens" @publicationSelected="selectPublication"></filters>
+       <filters @searched="searchIt" @topicSelected="topicSelected" @dateFilter="dateFilter" @lensSelected="selectLens" @publicationSelected="selectPublication" @minYearSelected="selectMinYear" @maxYearSelected="selectMaxYear"></filters>
 
       <section class="result_count">
                 
@@ -42,9 +42,7 @@
                                 <div class="item__txt">
                                     <h3>{{ listing.fields['Title/Topic'] }}</h3>
                                 </div>
-                                {{ listing.fields['Date Added'] }}
                                 
-
                             </div>
                         </div>
                     </div>
@@ -67,6 +65,7 @@ export default {
   data() {
     return {
       listings: [],
+      filterlistings: [],
       searchQuery: '',
       selectedTopics: [],
       datefilter: 'decending',
@@ -74,15 +73,9 @@ export default {
       publicationFilter: null,
       minRange: null,
       maxRange: null,
-      slider: {
-        startMin: 25,
-        startMax: 75,
-        min: 0,
-        max: 100,
-        start: 40,
-        step: 1
-        },
-      listingCount: 0
+      listingCount: 0,
+      minYear: null,
+      maxYear: null
     };
   },
   computed: {
@@ -110,9 +103,21 @@ export default {
       if(this.publicationFilter !== null) {
         filtered = filtered.filter(x => x.fields['Publication'].includes(this.publicationFilter));
       }
-      console.log(filtered.length);
+
+      if( this.minYear !== null ){
+        filtered = filtered.filter(x =>
+                   (new Date(x.fields['Date Added']).getFullYear())  >= (this.minYear)
+            );
+      }
+
+      if( this.maxYear !== null ){
+        filtered = filtered.filter(x =>
+                   (new Date(x.fields['Date Added']).getFullYear())  <= (this.maxYear)
+            );
+      }
 
       this.listingCount = filtered.length;
+      this.filterlistings = filtered;
       return filtered;
     }
   },
@@ -135,12 +140,18 @@ export default {
     selectPublication(publication) {
       this.publicationFilter = publication;
     },
+    selectMinYear(minYear){
+      this.minYear = minYear;
+    },
+    selectMaxYear(maxYear){
+      this.maxYear = maxYear;
+    },
     loadListings(){
       var self = this;
       var app_id = "appH81X67TStprrkF";
       var app_key = "key0Uo9OP77Cxoi5c";
       axios.get(
-          "https://api.airtable.com/v0/"+app_id+"/Weekly%20Report?maxRecords=999&view=Main%20View",
+          "https://api.airtable.com/v0/"+app_id+"/Weekly%20Report?maxRecords=50&view=Main%20View",
           {
               headers: { Authorization: "Bearer "+app_key }
           }
@@ -152,13 +163,13 @@ export default {
       });
     },
     getImageUrl(id){
-        if(this.listings[id].fields.Attachment)
-            return this.listings[id].fields.Attachment[0].thumbnails.large.url
+        if(this.filterlistings[id].fields.Attachment)
+            return this.filterlistings[id].fields.Attachment[0].thumbnails.large.url
         else
             return 'https://picsum.photos/600/300/?image=25'
     },
     openListing(id){
-        this.$router.push({ name: 'Listing', params: { id: this.listings[id].id }})
+        this.$router.push({ name: 'Listing', params: { id: this.filterlistings[id].id }})
     },
     handleScroll (event) {
     let fs = document.querySelector(".content__bottom");

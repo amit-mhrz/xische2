@@ -5,6 +5,23 @@
       <router-view></router-view>
 
     </div>
+    <footer>
+        <div class="container">
+          <div class="row">
+              <div class="col-sm-12 col-md-6">
+                  <ul>
+                      <li><a href="#"> Terms of Use </a></li>
+                      <li><a href="#">  Documentation & Support</a></li>
+                  </ul>
+              </div>
+              <div class="col-sm-12 col-md-6">
+                  <div class="copyrights">
+                      <p>Copyright © Xische & Co. 2019</p>
+                  </div>
+              </div>
+          </div>
+        </div>
+    </footer>
   </div>
 </template>
 
