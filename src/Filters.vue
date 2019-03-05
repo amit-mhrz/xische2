@@ -51,41 +51,44 @@
                       <h2>CONTENT TYPE</h2>
                      
                       <div class="filter__contentType filter__sticky">
-                          <multiselect v-model="selectedTopics" :options="availableTopics" return="id" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Select  Type" label="name" track-by="name" @input="executeLoader">
+                          <multiselect v-model="selectedTopics" :options="typeOptions" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Select  Type">
                             <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">
                                 {{ values.length }} options selected</span>
                             </template>
                           </multiselect>
-                          <pre class="language-json"><code>{{ selectedTopics }}</code></pre>
                       </div>
 
                       <div class="filter__contentType filter__fade">
                         <ul>
                           <li v-for="(topic, i) in availableTopics" :key="i">
-                            <input type="checkbox" :id="topic.name" :value="topic.value" v-model="selectedTopics">
-                            <label :for="topic.name">{{topic.name}}</label>
+                            <label :for="topic.name" class="check-box"><input type="checkbox" :id="topic.name" :value="topic.value" v-model="selectedTopics">
+                            <span class="checkmark"></span> {{topic.name}}</label>
                           </li>
                         </ul>
                       </div>
                   </div>
 
                   <div class="col-sm-3">
-                      <h2>PUBLICATION</h2>
+                      <h2>CONTENT TYPE</h2>
                      
                       <div class="filter__city filter__sticky">
-                          <multiselect v-model="selectedPTopics" :options="availablePublications" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Select  Type" label="text" track-by="text">
-                            <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">
-                                {{ values.length }} options selected</span>
-                            </template>
-                          </multiselect>
-                          <pre class="language-json"><code>{{ selectedPTopics }}</code></pre>
+                         <div class="select-wrapper">
+                          <select>
+                              <option>London</option>
+                              <option>London</option>
+                              <option>Toronto</option>
+                          </select>
+                          </div>
                       </div>
                       <div class="filter__city filter__fade">
                           <ul>
-                            <li v-for="(ptopic, i) in availablePublications" :key="i">
-                              <input type="checkbox" :id="ptopic.text" :value="ptopic.value" v-model="selectedPTopics">
-                              <label :for="ptopic.text">{{ptopic.text}}</label>
-                            </li>
+                              <li><label class="check-box"><input type="checkbox"><span class="checkmark"></span>  New York</label></li>
+                              <li><label class="check-box"><input type="checkbox"><span class="checkmark"></span>  London</label></li>
+                              <li><label class="check-box"><input type="checkbox"> <span class="checkmark"></span>  Toronto</label></li>
+                              <li><label class="check-box"><input type="checkbox"><span class="checkmark"></span>  Vancouver</label></li>
+                              <li><label class="check-box"><input type="checkbox"> <span class="checkmark"></span> Tokyo</label></li>
+                              <li><label class="check-box"><input type="checkbox"><span class="checkmark"></span>  Vienna</label></li>
+                              <li><label class="check-box"><input type="checkbox"><span class="checkmark"></span>  Stockholm</label></li>
                           </ul>
                       </div>
                   </div>
@@ -139,45 +142,52 @@
                       <h2>DATE RANGE</h2>
                       <div class="filter__date">
                           <div class="row">
-                                  <div class="col-sm-12">
-                                      <ul>
-                                          <li>
-                                              <div class="startdate-wrapper">
-                                              <select v-model="startDate">
-                                                  <option>2016</option>
-                                                  <option>2017</option>
-                                                  <option>2018</option>
-                                                  <option>2019</option>
-                                                  <option>2020</option>
-                                              </select>
-                                              {{startDate}}
-                                              </div>
-                                          </li>
-                                          <li>
-                                              <p>to</p>
-                                          </li>
-                                          <li>
-                                              <div class="enddate-wrapper">
-                                              <select v-model="endDate">
-                                                  <option>2016</option>
-                                                  <option>2017</option>
-                                                  <option>2018</option>
-                                                  <option>2019</option>
-                                                  <option>2020</option>
-                                              </select>
-                                              {{endDate}}
-                                              </div>
-                                          </li>
-                                      </ul>                                       
-                                  </div>
+                              <div class="col-sm-12">
+                                  <ul>
+                                    <li>
+                                        <div class="select-wrapper">
+                                        <select name="minYear">
+                                            <option value="null">Min</option>
+                                            <option v-for="year in years" :value="year">{{ year }}</option>
+                                        </select>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <p>to</p>
+                                    </li>
+                                    <li>
+                                        <div class="select-wrapper">
+                                        <select name="maxYear">
+                                            <option value="null">Max</option>
+                                            <option v-for="year in years" :value="year">{{ year }}</option>
+                                        </select>
+                                        </div>
+                                    </li>
+                                  </ul>
+                              </div>
                           </div>
                       </div>
                   </div>
+
               </div>
           </div>
       </section>
 
       <!-- Range Slider -->
+      <section class="content__bottom">
+         <!-- Range Slider -->
+            <section class="section__timeline filter__fade">
+                <div class="container">                      
+                    <veeno 
+                    :handles="[2016, 2019]" 
+                    :step = "1"
+                    :range = "{ 'min': 2010, 'max': 2020 }"
+                    connect
+                    :pipsy = "{mode: 'steps', density: 10}"
+                    ></veeno>
+                </div>
+            </section>              
+      </section>
 
 
   </div>
@@ -185,34 +195,36 @@
 
 <script>
 import axios from 'axios';
-import VueMatchHeights from 'vue-match-heights'
 import Multiselect from 'vue-multiselect';
-import 'vue-nouislider/dist/vue-nouislider.css'
+import veeno from 'veeno'
 import { Slide } from 'vue-burger-menu'
-import VueNouislider from 'vue-nouislider/dist/vue-nouislider.common'
+
 export default {
   name: "filters",
   components: {
     Multiselect,
-    Slide
+    Slide,
+    veeno
   },
   data() {
     return {
       searchText: "",
       availableTopics: [],
-      availablePTopics: [],
       availableLens: [
         { value: null, text: 'Please select a lense' },
       ],
-      availablePublications: [],
+      availablePublications: [
+        { value: null, text: 'Please select a publication' },
+      ],
+      availableMinDate: [],
+      availableMaxDate: [],
+      minDate: null,
       selectedTopics: [],
       dateFilter: "decending",
       selectedLens: null,
       selectedPublication: null,
-      selectedPTopics: [],
       scrolled: false,
-      startDate: [],
-      endDate: []
+      typeOptions: []
     };
   },
   mounted() {
@@ -221,7 +233,6 @@ export default {
     this.getTypes();
   },
   methods: {
-    executeLoader(selectedItems) {},
     getLenses(){
       var self = this;
       var app_id = "appH81X67TStprrkF";
@@ -233,7 +244,7 @@ export default {
           }
       ).then(function(response){
         response.data.records.forEach(element => {
-          self.availableLens.push({text: element.fields.Name, value: element.id})
+          self.availableLens.push({text: element.fields.Name, value: element.fields.Name})
         });
       }).catch(function(error){
         console.log(error)
@@ -251,7 +262,7 @@ export default {
       ).then(function(response){
         console.log(response.data.records);
         response.data.records.forEach(element => {
-          self.availablePublications.push({text: element.fields.Name, value: element.fields.Name})
+          self.availablePublications.push({text: element.fields.Name, value: element.id})
         });
       }).catch(function(error){
         console.log(error)
@@ -270,6 +281,7 @@ export default {
         console.log(response.data.records);
         response.data.records.forEach(element => {
           self.availableTopics.push({name: element.fields.Name, value: element.fields.Name})
+          self.typeOptions.push(element.fields.Name)
         });
       }).catch(function(error){
         console.log(error)
@@ -295,11 +307,10 @@ export default {
       this.$emit("searched", this.searchText);
     },
     selectedTopics() {
-      this.$emit("topicSelected", this.selectedTopics);
+      console.log("Type Selected --");
+      this.$emit("topicSelected", this.selectedTopics); 
     },
-    selectedPTopics() {
-      this.$emit("ptopicSelected", this.selectedPTopics);
-    },
+    
     dateFilter() {
       this.$emit("dateFilter", this.dateFilter);
     },
@@ -309,6 +320,12 @@ export default {
     selectedPublication() {
       this.$emit("publicationSelected", this.selectedPublication);
     },
+  },
+  computed : {
+    years () {
+      const year = new Date().getFullYear()
+      return Array.from({length: year - 2000}, (value, index) => 2001 + index)
+    }
   }
 };
 </script>

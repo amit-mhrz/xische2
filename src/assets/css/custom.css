@@ -1,4 +1,18 @@
-.filters {
+
+
+.noUi-horizontal .noUi-tooltip {
+    bottom: -100%;
+}
+.noUi-horizontal {
+    height: 45px;
+}
+.noUi-horizontal .noUi-handle {
+    width: 20px;
+    height: 50px;
+}
+.noUi-connect {
+    background: #403e75;
+}.filters {
     padding-top: 110px;
 }
 .single-page.container {
@@ -88,3 +102,25 @@
   color: #4e4e4e;
 }
 /*menu css end*/
+
+.noUi-horizontal .noUi-tooltip {
+    bottom: -100%;
+}
+.noUi-horizontal {
+    height: 45px;
+}
+.noUi-horizontal .noUi-handle {
+    width: 20px;
+    height: 50px;
+}
+.noUi-connect {
+    background: #403e75;
+}
+.section__appliedFilters {
+    padding-top: 80px;
+    padding-bottom: 20px;
+}
+.section__filter.sticky .filter__date li:nth-child(2) {
+    padding-left: 14px;
+    padding-top: 8px;
+}

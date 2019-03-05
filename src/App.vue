@@ -21,6 +21,7 @@
 <style lang="css">
     @import '/src/assets/dist/css/style.css';
     @import 'https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css';
+    @import '/src/assets/css/nouislider.min.css';
     @import '/src/assets/css/custom.css';
 
     #app {
