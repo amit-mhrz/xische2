@@ -166,6 +166,16 @@ section.section__filter.sticky {
 .noUi-value-sub { 
     pointer-events: none;
 }
+.section__filter ul::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+.section__filter ul::-webkit-scrollbar-thumb {
+    background-color: #403E75;
+    outline: 1px solid #403E75;
+    border-radius: 50px;
+}
+.section__filter ul { width: 80%; }
+
 @media (max-width: 1440px) {
   .check-box .checkmark:after {
     left: 5px;
@@ -179,5 +189,15 @@ section.section__filter.sticky {
   }
   .checkmark {
     top: 5px;
+  }
+}
+@media (max-width: 1440px) {
+.section__filter label {
+    font-size: 20px;
+  }
+  .checkmark {
+    height: 18px;
+    width: 18px;
+    top: 2px;
   }
 }
