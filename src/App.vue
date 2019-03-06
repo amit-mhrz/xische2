@@ -16,7 +16,7 @@
               </div>
               <div class="col-sm-12 col-md-6">
                   <div class="copyrights">
-                      <p>Copyright © Xische & Co. 2019</p>
+                      <p>Copyright © Xische & Co. {{ new Date().getFullYear() }}</p>
                   </div>
               </div>
           </div>

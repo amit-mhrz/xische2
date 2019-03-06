@@ -177,7 +177,7 @@
             <section class="section__timeline filter__fade">
                 <div class="container">                      
                     <veeno 
-                    :handles="[selectedminYear, selectedmaxYear]" 
+                    :handles="[selectedminYear + 6, selectedmaxYear]" 
                     :step = "1"
                     :range = "{ 'min': minYear, 'max': maxYear }"
                     connect

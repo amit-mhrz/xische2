@@ -36,13 +36,24 @@
                         <div class="item__box">
                             <b-card :img-src="getImageUrl(i)" img-alt="Image"></b-card>
                             <div class="item__desc">
-                                <div class="item__case">
+                                <div class="item__case" v-if="listing.fields['Type'][0] === 'Analysis'">
+                                    <p><span class="icon icon-case"><img src="/src/assets/dist/img/book-open.svg" alt=""></span>{{ listing.fields['Type'][0] }}</p>
+                                </div>
+                                <div class="item__case" v-else-if="listing.fields['Type'][0] === 'Audio/Visual'">
+                                    <p><span class="icon icon-case"><img src="/src/assets/dist/img/book-open.svg" alt=""></span>{{ listing.fields['Type'][0] }}</p>
+                                </div>
+                                <div class="item__case" v-else-if="listing.fields['Type'][0] === 'News'">
+                                    <p><span class="icon icon-case"><img src="/src/assets/dist/img/book-open.svg" alt=""></span>{{ listing.fields['Type'][0] }}</p>
+                                </div>
+                                <div class="item__case" v-else-if="listing.fields['Type'][0] === 'Report'">
+                                    <p><span class="icon icon-case"><img src="/src/assets/dist/img/book-open.svg" alt=""></span>{{ listing.fields['Type'][0] }}</p>
+                                </div>
+                                <div class="item__case" v-else>
                                     <p><span class="icon icon-case"><img src="/src/assets/dist/img/book-open.svg" alt=""></span>{{ listing.fields['Type'][0] }}</p>
                                 </div>
                                 <div class="item__txt">
                                     <h3>{{ listing.fields['Title/Topic'] }}</h3>
                                 </div>
-                                
                             </div>
                         </div>
                     </div>
