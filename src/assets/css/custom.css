@@ -160,3 +160,24 @@
 section.section__filter.sticky {
     padding-top: 50px;
 }
+.checkmark {
+    top: 2px;
+}
+.noUi-value-sub { 
+    pointer-events: none;
+}
+@media (max-width: 1440px) {
+  .check-box .checkmark:after {
+    left: 5px;
+    top: 2px;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 1px 1px 0;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  .checkmark {
+    top: 5px;
+  }
+}
