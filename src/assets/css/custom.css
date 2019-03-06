@@ -175,6 +175,39 @@ section.section__filter.sticky {
     border-radius: 50px;
 }
 .section__filter ul { width: 80%; }
+.content__bottom.sticky .section__timeline {
+    height: 30px;
+    width: 100%;
+    position: fixed;
+    top: 224px;
+    z-index: 999;
+    background-color: #D8D8D8;
+}
+.content__bottom.sticky .noUi-horizontal,
+.content__bottom.sticky .noUi-pips-horizontal {
+    height: 30px;
+}
+.content__bottom.sticky .noUi-horizontal .noUi-handle {
+    width: 20px;
+    height: 36px;
+}
+.content__bottom.sticky .noUi-marker-horizontal.noUi-marker-large,
+.content__bottom.sticky .noUi-value.noUi-value-horizontal.noUi-value-large,
+.content__bottom.sticky .noUi-marker-horizontal.noUi-marker-sub,
+.content__bottom.sticky .noUi-value-sub,
+.content__bottom.sticky .noUi-handle:after, 
+.content__bottom.sticky .noUi-handle:before{
+    display: none;
+}
+.section__filter.sticky .col-sm-3 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    max-width: 25%;
+}
+.section__filter.sticky .row div[class^="col-"]:nth-child(5) {
+    display: none;
+}
 
 @media (max-width: 1440px) {
   .check-box .checkmark:after {
