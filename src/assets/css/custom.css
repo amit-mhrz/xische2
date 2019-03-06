@@ -157,10 +157,6 @@
 .card-img {
     height: 150px;
 }
-.item__txt {
-    height: 150px;
-    overflow: hidden;
-}
 section.section__filter.sticky {
     padding-top: 50px;
 }

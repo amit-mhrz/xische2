@@ -15,7 +15,6 @@
                       </div>
                       <div class="col-sm-8">
                           <div class="appliedFilters">
-
                               <ul>
                                   <li v-for="(selcitem, i) in selectedTopics" :key="i">
                                     <a href="#">{{ selcitem }}<span class="icon icon-close" v-on:click="removeSelectedType(i)"><img src="/src/assets/img/close.png" alt=""></span></a>
@@ -53,6 +52,8 @@
                                 </div>
                                 <div class="item__txt">
                                     <h3>{{ listing.fields['Title/Topic'] }}</h3>
+                                    {{ listing.fields['Publication-str'] }}<br>
+                                    {{ listing.fields['Date Added'] }}
                                 </div>
                             </div>
                         </div>
@@ -162,7 +163,7 @@ export default {
       var app_id = "appH81X67TStprrkF";
       var app_key = "key0Uo9OP77Cxoi5c";
       axios.get(
-          "https://api.airtable.com/v0/"+app_id+"/Weekly%20Report?maxRecords=50&view=Main%20View",
+          "https://api.airtable.com/v0/"+app_id+"/Weekly%20Report?view=Main%20View",
           {
               headers: { Authorization: "Bearer "+app_key }
           }
