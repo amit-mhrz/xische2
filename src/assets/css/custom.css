@@ -218,6 +218,13 @@ section.section__filter.sticky {
     height: 145px;
     box-shadow: none;
 }
+.noUi-target {
+    box-shadow: none;
+    border: none;
+}
+section.section__filter.sticky {
+    z-index: 92;
+}
 
 @media (max-width: 1440px) {
   .check-box .checkmark:after {
