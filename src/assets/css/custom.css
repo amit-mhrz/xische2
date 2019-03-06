@@ -208,6 +208,16 @@ section.section__filter.sticky {
 .section__filter.sticky .row div[class^="col-"]:nth-child(5) {
     display: none;
 }
+.content__bottom.sticky .section__timeline {
+    z-index: 95; 
+}
+.noUi-target { 
+    box-shadow: none; 
+}
+section.section__filter.sticky {
+    height: 145px;
+    box-shadow: none;
+}
 
 @media (max-width: 1440px) {
   .check-box .checkmark:after {
