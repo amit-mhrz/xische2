@@ -1,7 +1,7 @@
 # Airtable Website
 
 > A Vue.js project.
-> The website is integrated to an Airtable base via API. Airtable base ID: app838WoUK7gksAto
+> The website is integrated to an Airtable base via API.
 
 ## Build Setup
 
