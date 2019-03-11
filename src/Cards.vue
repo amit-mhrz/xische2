@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="item__txt">
                                     <h3>{{ listing.fields['Title/Topic'] }}</h3>
-                                    {{ listing.fields['Publication-str'] }}<br>
+                                    {{ listing.fields['Publication-str'] }}</br>
                                     {{ listing.fields['Date Added'] }}
                                 </div>
                             </div>
@@ -140,6 +140,8 @@ export default {
         var start = 0; //this.pageNumber * 20,
         var end = (this.pageNumber * 20) + 20;
 
+        console.log("pageNumber =" + this.pageNumber);
+
         console.log("start = ", start )
         console.log("end = ", end )
 
@@ -226,5 +228,25 @@ export default {
   destroyed () {
     window.removeEventListener('scroll', this.handleScroll);
   },
+  watch: {
+
+    searchQuery(){
+      console.log("watch search query", this.pageNumber )
+      this.pageNumber = 0;
+    },
+    selectedTopics(){
+      console.log("watch type select", this.pageNumber)
+      this.pageNumber = 0;
+    },
+    minYear(){
+      console.log("watch min yr", this.pageNumber)
+      this.pageNumber = 0;
+    },
+    maxYear(){
+      console.log("watch max yr", this.pageNumber)
+      this.pageNumber = 0;
+    }
+
+  }
 };
 </script>
