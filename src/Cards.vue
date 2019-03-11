@@ -135,19 +135,19 @@ export default {
       this.listingCount = filtered.length;
       this.filterlistings = filtered;
 
-      if( this.pageNumber == 0 ){
+      //if( this.pageNumber == 0 ){
         //for pagination
-        var start = this.pageNumber * 20,
-        end = start + 20;
+        var start = 0; //this.pageNumber * 20,
+        var end = (this.pageNumber * 20) + 20;
 
         console.log("start = ", start )
         console.log("end = ", end )
 
         filtered = filtered.slice( start, end );
-      }
+      //}
       console.log("filter");
-
       return filtered;
+
     }
   },
   mounted() {
@@ -216,7 +216,6 @@ export default {
         console.log("call pag= ", this.pageNumber );
         this.pageNumber += 1;
       }
-      
       
     }
     
