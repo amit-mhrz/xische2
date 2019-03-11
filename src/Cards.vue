@@ -29,7 +29,7 @@
           <!-- Products -->
           <section class="section__products">
               <div class="container">
-                  <div class="row" v-match-heights="{el: ['.item__box']}">
+                  <div class="row" v-scroll="checkScroll" v-match-heights="{el: ['.item__box']}">
 
                     <div class="col-sm-12 col-md-6 col-lg-3" v-for="(listing, i) in filteredListings" :key="i" @click="openListing(i)">
                         <div class="item__box">
@@ -71,6 +71,8 @@
 <script>
 import axios from 'axios';
 import Filters from './Filters.vue';
+import article from  './articles.js'
+
 export default {
   name: "Cards",
   components: {Filters},
@@ -87,11 +89,13 @@ export default {
       maxRange: null,
       listingCount: 0,
       minYear: null,
-      maxYear: null
+      maxYear: null,
+      pageNumber: 0
     };
   },
   computed: {
     filteredListings () {
+
       let filtered = this.listings;
       if(this.datefilter === 'accending'){
         filtered = filtered.sort((a,b) => {
@@ -130,11 +134,25 @@ export default {
 
       this.listingCount = filtered.length;
       this.filterlistings = filtered;
+
+      if( this.pageNumber == 0 ){
+        //for pagination
+        var start = this.pageNumber * 20,
+        end = start + 20;
+
+        console.log("start = ", start )
+        console.log("end = ", end )
+
+        filtered = filtered.slice( start, end );
+      }
+      console.log("filter");
+
       return filtered;
     }
   },
   mounted() {
-    this.loadListings();
+      this.loadListings();
+      //this.scroll(); //check if user has scrolled to bottom 
   },
   methods: {
     searchIt (searchText){
@@ -160,18 +178,9 @@ export default {
     },
     loadListings(){
       var self = this;
-      var app_id = "appH81X67TStprrkF";
-      var app_key = "key0Uo9OP77Cxoi5c";
-      axios.get(
-          "https://api.airtable.com/v0/"+app_id+"/Weekly%20Report?view=Main%20View",
-          {
-              headers: { Authorization: "Bearer "+app_key }
-          }
-      ).then(function(response){
-        console.log(response.data.records);
-        self.listings = response.data.records;
-      }).catch(function(error){
-        console.log(error)
+      article.getDatas().then(records => { 
+        //console.log( records ); 
+        self.listings = records;
       });
     },
     getImageUrl(id){
@@ -193,6 +202,22 @@ export default {
     },
     removeSelectedType(typeIndex){
       this.selectedTopics.splice(typeIndex, 1);
+    },
+    checkScroll (evt, el) {
+      var D = document;
+      var docHeight =  Math.max(
+              D.body.scrollHeight, D.documentElement.scrollHeight,
+              D.body.offsetHeight, D.documentElement.offsetHeight,
+              D.body.clientHeight, D.documentElement.clientHeight
+          );
+      var windowHeight = window.innerHeight;
+
+      if( ( windowHeight + window.scrollY) >= docHeight ){
+        console.log("call pag= ", this.pageNumber );
+        this.pageNumber += 1;
+      }
+      
+      
     }
     
   },

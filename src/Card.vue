@@ -63,7 +63,8 @@
 
   <script>
   import axios from 'axios';
-  import { Slide } from 'vue-burger-menu'
+  import { Slide } from 'vue-burger-menu';
+  import article from  './articles.js';
   export default {
     name: "Card",
     components: {
@@ -93,20 +94,11 @@
     },
     methods: {
         getListings(){
-            var self = this;
-              var app_id = "appH81X67TStprrkF";
-              var app_key = "key0Uo9OP77Cxoi5c";
-              axios.get(
-                  "https://api.airtable.com/v0/"+app_id+"/Weekly%20Report?view=Main%20View",
-                  {
-                      headers: { Authorization: "Bearer "+app_key }
-                  }
-              ).then(function(response){
-                  console.log(response.data.records);
-                  self.listings = response.data.records;
-              }).catch(function(error){
-                  console.log(error)
-              });
+          var self = this;
+          article.getDatas().then(records => { 
+            //console.log( records ); 
+            self.listings = records;
+          });
 
         },
     }

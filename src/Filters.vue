@@ -263,7 +263,7 @@
                 headers: { Authorization: "Bearer "+app_key }
             }
         ).then(function(response){
-          console.log(response.data.records);
+          //console.log(response.data.records);
           response.data.records.forEach(element => {
             self.availablePublications.push({text: element.fields.Name, value: element.id})
           });
@@ -281,7 +281,7 @@
                 headers: { Authorization: "Bearer "+app_key }
             }
         ).then(function(response){
-          console.log(response.data.records);
+          //console.log(response.data.records);
           response.data.records.forEach(element => {
             self.availableTopics.push({name: element.fields.Name, value: element.fields.Name})
             self.typeOptions.push(element.fields.Name)
